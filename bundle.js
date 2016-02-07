@@ -31,15 +31,15 @@ webpackJsonp([0],{
 
 	var _history2 = _interopRequireDefault(_history);
 
-	var _routes = __webpack_require__(232);
+	var _routes = __webpack_require__(233);
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _AuthActions = __webpack_require__(237);
+	var _AuthActions = __webpack_require__(238);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _AuthStore = __webpack_require__(235);
+	var _AuthStore = __webpack_require__(236);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1005,19 +1005,19 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _createHashHistory = __webpack_require__(174);
+	var _createBrowserHistory = __webpack_require__(232);
 
-	var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
+	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = (0, _createHashHistory2.default)();
+	exports.default = (0, _createBrowserHistory2.default)();
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "history.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 
-/***/ 232:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1034,19 +1034,19 @@ webpackJsonp([0],{
 
 	var _reactRouter = __webpack_require__(171);
 
-	var _App = __webpack_require__(233);
+	var _App = __webpack_require__(234);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Login = __webpack_require__(234);
+	var _Login = __webpack_require__(235);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Dashboard = __webpack_require__(242);
+	var _Dashboard = __webpack_require__(243);
 
 	var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-	var _AuthStore = __webpack_require__(235);
+	var _AuthStore = __webpack_require__(236);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1071,7 +1071,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 233:
+/***/ 234:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1127,7 +1127,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 234:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1148,15 +1148,15 @@ webpackJsonp([0],{
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _AuthStore = __webpack_require__(235);
+	var _AuthStore = __webpack_require__(236);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
-	var _AuthActions = __webpack_require__(237);
+	var _AuthActions = __webpack_require__(238);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _connectToStores = __webpack_require__(241);
+	var _connectToStores = __webpack_require__(242);
 
 	var _connectToStores2 = _interopRequireDefault(_connectToStores);
 
@@ -1183,7 +1183,7 @@ webpackJsonp([0],{
 	  _createClass(Login, [{
 	    key: 'onClickLogin',
 	    value: function onClickLogin() {
-	      window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2F%23%2Flogin';
+	      window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin';
 	    }
 	  }, {
 	    key: 'onRedirect',
@@ -1259,7 +1259,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 235:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1272,19 +1272,19 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _alt = __webpack_require__(236);
+	var _alt = __webpack_require__(237);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
-	var _AuthActions = __webpack_require__(237);
+	var _AuthActions = __webpack_require__(238);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _InterceptorUtil = __webpack_require__(238);
+	var _InterceptorUtil = __webpack_require__(239);
 
 	var _InterceptorUtil2 = _interopRequireDefault(_InterceptorUtil);
 
-	var _config = __webpack_require__(239);
+	var _config = __webpack_require__(240);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -1296,7 +1296,7 @@ webpackJsonp([0],{
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _jsuri = __webpack_require__(240);
+	var _jsuri = __webpack_require__(241);
 
 	var _jsuri2 = _interopRequireDefault(_jsuri);
 
@@ -1328,7 +1328,7 @@ webpackJsonp([0],{
 	    value: function onLogin(credentials) {
 	      var _this = this;
 
-	      _axios2.default.post('https://runkeeper.com/apps/token', 'grant_type=authorization_code' + '&code=' + credentials.code + '&client_id=' + _config2.default.clientId + '&client_secret=' + _config2.default.clientSecret + '&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2F%23%2Flogin', {
+	      _axios2.default.post('https://runkeeper.com/apps/token', 'grant_type=authorization_code' + '&code=' + credentials.code + '&client_id=' + _config2.default.clientId + '&client_secret=' + _config2.default.clientSecret + '&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin', {
 	        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 	      }).then(function (response) {
 	        _this.saveTokens(response.data);
@@ -1504,7 +1504,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 236:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1527,7 +1527,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 237:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1538,7 +1538,7 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _alt = __webpack_require__(236);
+	var _alt = __webpack_require__(237);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
@@ -1558,7 +1558,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 238:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1604,7 +1604,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 239:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1628,7 +1628,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 240:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2095,7 +2095,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 241:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2218,7 +2218,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 242:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -2235,19 +2235,19 @@ webpackJsonp([0],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _connectToStores = __webpack_require__(241);
+	var _connectToStores = __webpack_require__(242);
 
 	var _connectToStores2 = _interopRequireDefault(_connectToStores);
 
-	var _AuthStore = __webpack_require__(235);
+	var _AuthStore = __webpack_require__(236);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
-	var _AuthActions = __webpack_require__(237);
+	var _AuthActions = __webpack_require__(238);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _reactChartjs = __webpack_require__(243);
+	var _reactChartjs = __webpack_require__(244);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2418,33 +2418,33 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 243:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  Bar: __webpack_require__(244),
-	  Doughnut: __webpack_require__(248),
-	  Line: __webpack_require__(249),
-	  Pie: __webpack_require__(250),
-	  PolarArea: __webpack_require__(251),
-	  Radar: __webpack_require__(252),
-	  createClass: __webpack_require__(245).createClass
+	  Bar: __webpack_require__(245),
+	  Doughnut: __webpack_require__(249),
+	  Line: __webpack_require__(250),
+	  Pie: __webpack_require__(251),
+	  PolarArea: __webpack_require__(252),
+	  Radar: __webpack_require__(253),
+	  createClass: __webpack_require__(246).createClass
 	};
 
 
 /***/ },
 
-/***/ 244:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(245);
+	var vars = __webpack_require__(246);
 
 	module.exports = vars.createClass('Bar', ['getBarsAtEvent']);
 
 
 /***/ },
 
-/***/ 245:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -2503,7 +2503,7 @@ webpackJsonp([0],{
 	    };
 
 	    classData.initializeChart = function(nextProps) {
-	      var Chart = __webpack_require__(246);
+	      var Chart = __webpack_require__(247);
 	      var el = ReactDOM.findDOMNode(this);
 	      var ctx = el.getContext("2d");
 	      var chart = new Chart(ctx)[chartType](nextProps.data, nextProps.options || {});
@@ -2580,7 +2580,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 246:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2887,7 +2887,7 @@ webpackJsonp([0],{
 				//Method for warning of errors
 				if (window.console && typeof window.console.warn == "function") console.warn(str);
 			},
-			amd = helpers.amd = ("function" == 'function' && __webpack_require__(247)),
+			amd = helpers.amd = ("function" == 'function' && __webpack_require__(248)),
 			//-- Math methods
 			isNumber = helpers.isNumber = function(n){
 				return !isNaN(parseFloat(n)) && isFinite(n);
@@ -6063,7 +6063,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 247:
+/***/ 248:
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -6072,22 +6072,12 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 248:
-/***/ function(module, exports, __webpack_require__) {
-
-	var vars = __webpack_require__(245);
-
-	module.exports = vars.createClass('Doughnut', ['getSegmentsAtEvent']);
-
-
-/***/ },
-
 /***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(245);
+	var vars = __webpack_require__(246);
 
-	module.exports = vars.createClass('Line', ['getPointsAtEvent']);
+	module.exports = vars.createClass('Doughnut', ['getSegmentsAtEvent']);
 
 
 /***/ },
@@ -6095,9 +6085,9 @@ webpackJsonp([0],{
 /***/ 250:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(245);
+	var vars = __webpack_require__(246);
 
-	module.exports = vars.createClass('Pie', ['getSegmentsAtEvent']);
+	module.exports = vars.createClass('Line', ['getPointsAtEvent']);
 
 
 /***/ },
@@ -6105,9 +6095,9 @@ webpackJsonp([0],{
 /***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(245);
+	var vars = __webpack_require__(246);
 
-	module.exports = vars.createClass('PolarArea', ['getSegmentsAtEvent']);
+	module.exports = vars.createClass('Pie', ['getSegmentsAtEvent']);
 
 
 /***/ },
@@ -6115,7 +6105,17 @@ webpackJsonp([0],{
 /***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(245);
+	var vars = __webpack_require__(246);
+
+	module.exports = vars.createClass('PolarArea', ['getSegmentsAtEvent']);
+
+
+/***/ },
+
+/***/ 253:
+/***/ function(module, exports, __webpack_require__) {
+
+	var vars = __webpack_require__(246);
 
 	module.exports = vars.createClass('Radar', ['getPointsAtEvent']);
 
