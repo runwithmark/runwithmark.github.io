@@ -1183,7 +1183,7 @@ webpackJsonp([0],{
 	  _createClass(Login, [{
 	    key: 'onClickLogin',
 	    value: function onClickLogin() {
-	      window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin';
+	      window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin';
 	    }
 	  }, {
 	    key: 'onRedirect',
@@ -1328,7 +1328,7 @@ webpackJsonp([0],{
 	    value: function onLogin(credentials) {
 	      var _this = this;
 
-	      _axios2.default.post('https://runkeeper.com/apps/token', 'grant_type=authorization_code' + '&code=' + credentials.code + '&client_id=' + _config2.default.clientId + '&client_secret=' + _config2.default.clientSecret + '&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin', {
+	      _axios2.default.post('https://runkeeper.com/apps/token', 'grant_type=authorization_code' + '&code=' + credentials.code + '&client_id=' + _config2.default.clientId + '&client_secret=' + _config2.default.clientSecret + '&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin', {
 	        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 	      }).then(function (response) {
 	        _this.saveTokens(response.data);
