@@ -1112,7 +1112,7 @@ webpackJsonp([0],{
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'main' },
 	        this.props.children
 	      );
 	    }
@@ -2340,6 +2340,7 @@ webpackJsonp([0],{
 	      var dayNumWindow = Math.max(dayNum - 14, 0);
 
 	      var progress = Math.round(Math.max(runMiles - dayNumWindow, 0) / Math.max(dayNum - dayNumWindow, 1) * 100);
+	      var progressRound5 = progress <= 100 ? Math.round(progress / 5) * 5 : 101;
 
 	      var graphData = [];
 	      for (var i = 1; i <= dayNum; i++) {
@@ -2378,31 +2379,46 @@ webpackJsonp([0],{
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'Connected ',
 	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.onClickLogout.bind(this) },
-	          'Logout'
+	          'div',
+	          { className: 'logout' },
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.onClickLogout.bind(this) },
+	            'Logout'
+	          )
 	        ),
 	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Day: ',
-	          dayNum
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Miles run (truncated to 0.5mi): ',
-	          runMiles,
-	          ' / 366'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Progress: ',
-	          progress,
-	          '%'
+	          'div',
+	          { className: 'box1' },
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'fw fw1' },
+	            'Day ',
+	            dayNum
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'wrap' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: "progress-radial progress-" + progressRound5 },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'overlay' },
+	                _react2.default.createElement(
+	                  'p',
+	                  { className: 'fw fw2' },
+	                  runMiles
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  { className: 'fw fw3' },
+	                  'miles / 365'
+	                )
+	              )
+	            )
+	          )
 	        ),
 	        _react2.default.createElement(_reactChartjs.Line, { data: data, options: options })
 	      );
