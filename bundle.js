@@ -50,7 +50,6 @@ webpackJsonp([0],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Initialize GA
-	_reactGa2.default.initializeExperiment('117035755-0');
 	_reactGa2.default.initialize('UA-74056537-1');
 
 	// Try to connect user from local storage value
@@ -2877,7 +2876,7 @@ webpackJsonp([0],{
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'xlogout' },
+	          { className: 'logout' },
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: this.onClickLogout.bind(this) },
