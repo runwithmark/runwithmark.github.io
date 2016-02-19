@@ -101,9 +101,9 @@
 	__webpack_require__(1);
 	__webpack_require__(170);
 	__webpack_require__(171);
-	__webpack_require__(254);
+	__webpack_require__(256);
 	__webpack_require__(158);
-	module.exports = __webpack_require__(257);
+	module.exports = __webpack_require__(259);
 
 
 /***/ },
@@ -25642,7 +25642,9 @@
 /* 229 */,
 /* 230 */,
 /* 231 */,
-/* 232 */
+/* 232 */,
+/* 233 */,
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -25826,8 +25828,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 233 */,
-/* 234 */,
 /* 235 */,
 /* 236 */,
 /* 237 */,
@@ -25847,11 +25847,13 @@
 /* 251 */,
 /* 252 */,
 /* 253 */,
-/* 254 */
+/* 254 */,
+/* 255 */,
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mixin = __webpack_require__(255);
-	var assign = __webpack_require__(256);
+	var mixin = __webpack_require__(257);
+	var assign = __webpack_require__(258);
 
 	var mixinProto = mixin({
 	  // lifecycle stuff is as you'd expect
@@ -26004,7 +26006,7 @@
 
 
 /***/ },
-/* 255 */
+/* 257 */
 /***/ function(module, exports) {
 
 	var objToStr = function(x){ return Object.prototype.toString.call(x); };
@@ -26187,7 +26189,7 @@
 
 
 /***/ },
-/* 256 */
+/* 258 */
 /***/ function(module, exports) {
 
 	/* eslint-disable no-unused-vars */
@@ -26232,7 +26234,7 @@
 
 
 /***/ },
-/* 257 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26249,7 +26251,7 @@
 
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 
-	var _createBrowserHistory = __webpack_require__(232);
+	var _createBrowserHistory = __webpack_require__(234);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
@@ -26273,7 +26275,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(258);
+	var _useBeforeUnload2 = __webpack_require__(260);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -26293,13 +26295,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(259);
+	var _enableBeforeUnload2 = __webpack_require__(261);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(260);
+	var _enableQueries2 = __webpack_require__(262);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -26308,7 +26310,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 258 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -26425,7 +26427,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 259 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26438,7 +26440,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(258);
+	var _useBeforeUnload = __webpack_require__(260);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -26446,7 +26448,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 260 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

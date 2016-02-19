@@ -27,23 +27,30 @@ webpackJsonp([0],{
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _history = __webpack_require__(231);
+	var _reactGa = __webpack_require__(231);
+
+	var _reactGa2 = _interopRequireDefault(_reactGa);
+
+	var _history = __webpack_require__(233);
 
 	var _history2 = _interopRequireDefault(_history);
 
-	var _routes = __webpack_require__(233);
+	var _routes = __webpack_require__(235);
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _AuthActions = __webpack_require__(238);
+	var _AuthActions = __webpack_require__(240);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _AuthStore = __webpack_require__(236);
+	var _AuthStore = __webpack_require__(238);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Initialize GA
+	_reactGa2.default.initialize('UA-74056537-1', { debug: true });
 
 	// Try to connect user from local storage value
 	_AuthActions2.default.localLogin();
@@ -63,7 +70,23 @@ webpackJsonp([0],{
 	  });
 	});
 
-	_reactDom2.default.render(_react2.default.createElement(_reactRouter2.default, { history: _history2.default, routes: _routes2.default }), document.getElementById('wrapper'));
+	function routerPageview() {
+	  _reactGa2.default.pageview(this.state.location.pathname);
+	}
+
+	_reactDom2.default.render(_react2.default.createElement(_reactRouter2.default, { history: _history2.default, routes: _routes2.default, onUpdate: routerPageview }), document.getElementById('wrapper'));
+
+	// function startApp(){
+	//         Router.run(Routes, Router.HistoryLocation, function (Handler, state) {
+	//                 ga.pageview(state.pathname);
+	//                 var lang = typeof state.params.lang !== 'undefined' ? state.params.lang : 'en';
+	//                 React.render(<Handler lang={lang}/>, document.getElementById('universe'));
+	//         });
+	// }
+	// startApp();
+
+	// ga.set('userId', {{USER_ID}}); // Set the user ID using signed-in user_id.
+	// ga.outboundLink(args, hitCallback)
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "app.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -997,6 +1020,454 @@ webpackJsonp([0],{
 /***/ 231:
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * React Google Analytics Module
+	 *
+	 * @package react-ga
+	 * @author  Adam Lofting <adam@mozillafoundation.org>
+	 *          Atul Varma <atul@mozillafoundation.org>
+	 */
+
+	/**
+	 * Utilities
+	 */
+
+	var _redacted = 'REDACTED (Potential Email Address)';
+	var _debug = false;
+
+	function warn (s) {
+	  console.warn('[react-ga]', s);
+	}
+
+	function log (s) {
+	  console.info('[react-ga]', s);
+	}
+
+	// GA strings need to have leading/trailing whitespace trimmed, and not all
+	// browsers have String.prototoype.trim().
+	function trim(s) {
+	  return s.replace(/^\s+|\s+$/g, '');
+	}
+
+	function removeLeadingSlash (s) {
+	  if (s.substring(0, 1) === '/') {
+	    s = s.substring(1);
+	  }
+	  return s;
+	}
+
+	/**
+	 * To Title Case 2.1 - http://individed.com/code/to-title-case/
+	 * Copyright 2008-2013 David Gouch. Licensed under the MIT License.
+	 * https://github.com/gouch/to-title-case
+	 */
+	function toTitleCase(s){
+	  var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;
+	  s = trim(s);
+
+	  return s.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function(match, index, title){
+	    if (index > 0 &&
+	        index + match.length !== title.length &&
+	        match.search(smallWords) > -1 &&
+	        title.charAt(index - 2) !== ":" &&
+	        (title.charAt(index + match.length) !== '-' || title.charAt(index - 1) === '-') &&
+	        title.charAt(index - 1).search(/[^\s-]/) < 0) {
+	      return match.toLowerCase();
+	    }
+
+	    if (match.substr(1).search(/[A-Z]|\../) > -1) {
+	      return match;
+	    }
+
+	    return match.charAt(0).toUpperCase() + match.substr(1);
+	  });
+	}
+
+	// See if s could be an email address. We don't want to send personal data like email.
+	function mightBeEmail(s) {
+	  // There's no point trying to validate rfc822 fully, just look for ...@...
+	  return (/[^@]+@[^@]+/).test(s);
+	}
+
+	function format(s) {
+	  if(mightBeEmail(s)) {
+	    warn("This arg looks like an email address, redacting.");
+	    s = _redacted;
+	    return s;
+	  }
+	  s = toTitleCase(s);
+	  return s;
+	}
+
+	var reactGA = {
+	  initialize: function(gaTrackingID, options) {
+	    if (!gaTrackingID) {
+	      warn('gaTrackingID is required in initialize()');
+	      return;
+	    }
+
+	    if (options) {
+	      if (options.debug && options.debug === true) {
+	        _debug = true;
+	      }
+	    }
+
+	    // https://developers.google.com/analytics/devguides/collection/analyticsjs/
+	    /* jshint ignore:start */
+	    (function(i, s, o, g, r, a, m) {
+	      i['GoogleAnalyticsObject'] = r;
+	      i[r] = i[r] || function() {
+	        (i[r].q = i[r].q || []).push(arguments)
+	      }, i[r].l = 1 * new Date();
+	      a = s.createElement(o),
+	          m = s.getElementsByTagName(o)[0];
+	      a.async = 1;
+	      a.src = g;
+	      m.parentNode.insertBefore(a, m)
+	    })(window, document, 'script',
+	       '//www.google-analytics.com/analytics.js', 'ga');
+	    /* jshint ignore:end */
+
+	    ga('create', gaTrackingID, 'auto');
+	  },
+
+	  initializeExperiment: function(gaExperimentKey) {
+	    if (!gaExperimentKey) {
+	      warn('gaExperimentKey is required in initializeExperiment()');
+	      return;
+	    }
+
+	    // https://developers.google.com/analytics/devguides/collection/analyticsjs/
+	    /* jshint ignore:start */
+	function utmx_section(){}function utmx(){}(function(){var
+	k=gaExperimentKey,d=document,l=d.location,c=d.cookie;
+	if(l.search.indexOf('utm_expid='+k)>0)return;
+	function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
+	indexOf(';',i);return escape(c.substring(i+n.length+1,j<0?c.
+	length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;d.write(
+	'<sc'+'ript src="'+'http'+(l.protocol=='https:'?'s://ssl':
+	'://www')+'.google-analytics.com/ga_exp.js?'+'utmxkey='+k+
+	'&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
+	valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
+	'" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
+	    /* jshint ignore:end */
+	  },
+
+	  /**
+	   * pageview:
+	   * Basic GA pageview tracking
+	   * @param  {String} path - the current page page e.g. '/about'
+	   */
+	  pageview: function (path) {
+	    if (!path) {
+	      warn('path is required in .pageview()');
+	      return;
+	    }
+
+	    path = trim(path);
+	    if (path === '') {
+	      warn('path cannot be an empty string in .pageview()');
+	      return;
+	    }
+
+	    if (typeof ga === 'function') {
+	      ga('send', 'pageview', path);
+
+	      if (_debug) {
+	        log('called ga(\'send\', \'pageview\', path);');
+	        log('with path: ' + path);
+	      }
+	    }
+	  },
+
+	  /**
+	   * modalview:
+	   * a proxy to basic GA pageview tracking to consistently track
+	   * modal views that are an equivalent UX to a traditional pageview
+	   * @param  {String} modalName e.g. 'add-or-edit-club'
+	   */
+	  modalview: function (modalName) {
+	    if (!modalName) {
+	      warn('modalName is required in .modalview(modalName)');
+	      return;
+	    }
+
+	    modalName = trim(modalName);
+	    modalName = removeLeadingSlash(modalName);
+
+	    if (modalName === '') {
+	      warn('modalName cannot be an empty string or a single / in .modalview()');
+	      return;
+	    }
+
+	    if (typeof ga === 'function') {
+	      modalName = trim(modalName);
+	      var path = '/modal/' + modalName;
+	      ga('send', 'pageview', path);
+
+	      if (_debug) {
+	        log('called ga(\'send\', \'pageview\', path);');
+	        log('with path: ' + path);
+	      }
+	    }
+	  },
+
+	  /**
+	   * event:
+	   * GA event tracking
+	   * @param args.category {String} required
+	   * @param args.action {String} required
+	   * @param args.label {String} optional
+	   * @param args.value {Int} optional
+	   * @param args.nonInteraction {boolean} optional
+	   */
+	  event: function (args) {
+	    if (typeof ga === 'function') {
+
+	      // Simple Validation
+	      if (!args || !args.category || !args.action) {
+	        warn('args.category AND args.action are required in event()');
+	        return;
+	      }
+
+	      // Required Fields
+	      var fieldObject = {
+	        'hitType': 'event',
+	        'eventCategory': format(args.category),
+	        'eventAction': format(args.action)
+	      };
+
+	      // Optional Fields
+	      if (args.label) {
+	        fieldObject.eventLabel = format(args.label);
+	      }
+
+	      if (args.value) {
+	        if(typeof args.value !== 'number') {
+	          warn('Expected `args.value` arg to be a Number.');
+	        } else {
+	          fieldObject.eventValue = args.value;
+	        }
+	      }
+
+	      if (args.nonInteraction) {
+	        if(typeof args.nonInteraction !== 'boolean') {
+	          warn('`args.nonInteraction` must be a boolean.');
+	        } else {
+	          fieldObject.nonInteraction = args.nonInteraction;
+	        }
+	      }
+
+	      // Send to GA
+	      ga('send', fieldObject);
+
+	      if (_debug) {
+	        log('called ga(\'send\', fieldObject);');
+	        log('with fieldObject: ' + JSON.stringify(fieldObject));
+	      }
+	    }
+	  },
+
+	  set: function (key, value) {
+	    if (!key || !value) {
+	      warn('key AND value are required in .pageview()');
+	      return;
+	    }
+
+	    key = trim(key);
+	    if (key === '') {
+	      warn('key cannot be an empty string in .set()');
+	      return;
+	    }
+
+	    if (typeof ga === 'function') {
+	      ga('set', key, format(value));
+
+	      if (_debug) {
+	        log('called ga(\'set\', key, value);');
+	        log('with key: ' + key + ', value: ' + value);
+	      }
+	    }
+	  },
+
+	  plugin: {
+	    /**
+	     * require:
+	     * GA requires a plugin
+	     * @param name {String} e.g. 'ecommerce' or 'myplugin'
+	     */
+	    require: function(name) {
+	      if (typeof ga === 'function') {
+	        ga('require', name);
+	      }
+
+	      if (_debug) {
+	        log('called ga(\'require\', \'' + name + '\');');
+	      }
+	    },
+
+	    /**
+	     * execute:
+	     * GA execute action for plugin
+	     * @param pluginName {String} e.g. 'ecommerce' or 'myplugin'
+	     * @param action {String} e.g. 'addItem' or 'myCustomAction'
+	     * @param payload {Object} optional e.g { id: '1x5e', name : 'My product to track' }
+	     */
+	    execute: function(pluginName, action, payload) {
+	      if (typeof ga === 'function') {
+	        if (typeof pluginName !== 'string') {
+	          warn('Expected `pluginName` arg to be a String.');
+	        } else if (typeof action !== 'string') {
+	          warn('Expected `action` arg to be a String.');
+	        } else {
+	          var command = pluginName + ':' + action;
+	          payload = payload || null;
+	          if (payload) {
+	            ga(command, payload);
+	            if (_debug) {
+	              log('called ga(\'' + command + '\');');
+	              log('with payload: ' + JSON.stringify(payload));
+	            }
+	          } else {
+	            ga(command);
+	            if (_debug) {
+	              log('called ga(\'' + command + '\');');
+	            }
+
+	          }
+	        }
+	      }
+	    }
+	  },
+
+	  /**
+	   * outboundLink:
+	   * GA outboundLink tracking
+	   * @param args.label {String} e.g. url, or 'Create an Account'
+	   * @param {function} hitCallback - Called after processing a hit.
+	   */
+	  outboundLink: function (args, hitCallback) {
+	    if (typeof hitCallback !== 'function') {
+	      warn('hitCallback function is required');
+	      return;
+	    }
+
+	    if (typeof ga === 'function') {
+
+	      // Simple Validation
+	      if (!args || !args.label) {
+	        warn('args.label is required in outboundLink()');
+	        return;
+	      }
+
+	      // Required Fields
+	      var fieldObject = {
+	        'hitType': 'event',
+	        'eventCategory': 'Outbound',
+	        'eventAction': 'Click',
+	        'eventLabel': format(args.label)
+	      };
+
+	      var safetyCallbackCalled = false;
+	      var safetyCallback = function () {
+
+	        // This prevents a delayed response from GA
+	        // causing hitCallback from being fired twice
+	        safetyCallbackCalled = true;
+
+	        hitCallback();
+	      };
+
+	      // Using a timeout to ensure the execution of critical application code
+	      // in the case when the GA server might be down
+	      // or an ad blocker prevents sending the data
+
+	      // register safety net timeout:
+	      var t = setTimeout(safetyCallback, 250);
+
+	      var clearableCallbackForGA = function () {
+	          clearTimeout(t);
+	          if (!safetyCallbackCalled) {
+	            hitCallback();
+	          }
+	      };
+
+	      fieldObject.hitCallback = clearableCallbackForGA;
+
+	      // Send to GA
+	      ga('send', fieldObject);
+
+	      if (_debug) {
+	        log('called ga(\'send\', fieldObject);');
+	        log('with fieldObject: ' + JSON.stringify(fieldObject));
+	      }
+	    } else {
+	      // if ga is not defined, return the callback so the application
+	      // continues to work as expected
+	      setTimeout(hitCallback, 0);
+	    }
+	  }
+	};
+
+	var OutboundLink = __webpack_require__(232);
+	OutboundLink.trackLink = reactGA.outboundLink;
+	reactGA.OutboundLink = OutboundLink;
+
+	module.exports = reactGA;
+
+
+/***/ },
+
+/***/ 232:
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var assign = __webpack_require__(39);
+
+	var NEWTAB = '_blank';
+
+	var OutboundLink = React.createClass({
+	  displayName: 'OutboundLink',
+	  propTypes: {
+	    eventLabel: React.PropTypes.string.isRequired
+	  },
+	  statics: {
+	    trackLink: function() {
+	      console.warn("ga tracking not enabled");
+	    }
+	  },
+	  handleClick: function (e) {
+	    e.preventDefault();
+	    var props = this.props;
+	    var eventMeta = {label: props.eventLabel};
+	    OutboundLink.trackLink(eventMeta, function () {
+	      if ( props.target === NEWTAB ) {
+	        window.open(props.to, NEWTAB);
+	      } else {
+	        window.location.href = props.to;
+	      }
+	    });
+	    if (props.onClick) {
+	      props.onClick(e);
+	    }
+	  },
+	  render: function () {
+	    var props = assign({}, this.props, {
+	      href: this.props.to,
+	      onClick: this.handleClick
+	    });
+	    return React.createElement('a', props);
+	  }
+	});
+
+	module.exports = OutboundLink;
+
+
+/***/ },
+
+/***/ 233:
+/***/ function(module, exports, __webpack_require__) {
+
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	'use strict';
@@ -1005,7 +1476,7 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _createBrowserHistory = __webpack_require__(232);
+	var _createBrowserHistory = __webpack_require__(234);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
@@ -1017,7 +1488,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 233:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1034,19 +1505,19 @@ webpackJsonp([0],{
 
 	var _reactRouter = __webpack_require__(171);
 
-	var _App = __webpack_require__(234);
+	var _App = __webpack_require__(236);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Login = __webpack_require__(235);
+	var _Login = __webpack_require__(237);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Dashboard = __webpack_require__(243);
+	var _Dashboard = __webpack_require__(245);
 
 	var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-	var _AuthStore = __webpack_require__(236);
+	var _AuthStore = __webpack_require__(238);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1071,7 +1542,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 234:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1127,7 +1598,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 235:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1148,15 +1619,19 @@ webpackJsonp([0],{
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _AuthStore = __webpack_require__(236);
+	var _reactGa = __webpack_require__(231);
+
+	var _reactGa2 = _interopRequireDefault(_reactGa);
+
+	var _AuthStore = __webpack_require__(238);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
-	var _AuthActions = __webpack_require__(238);
+	var _AuthActions = __webpack_require__(240);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _connectToStores = __webpack_require__(242);
+	var _connectToStores = __webpack_require__(244);
 
 	var _connectToStores2 = _interopRequireDefault(_connectToStores);
 
@@ -1176,14 +1651,19 @@ webpackJsonp([0],{
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Login).call(this, props));
 
-	    _this.state = { redirect: false };
+	    _this.state = {
+	      experiment: null,
+	      redirect: false
+	    };
 	    return _this;
 	  }
 
 	  _createClass(Login, [{
 	    key: 'onClickLogin',
 	    value: function onClickLogin() {
-	      window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin';
+	      _reactGa2.default.outboundLink({ label: 'Join with Runkeeper' }, function () {
+	        window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin';
+	      });
 	    }
 	  }, {
 	    key: 'onRedirect',
@@ -1195,6 +1675,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
+	      _reactGa2.default.initializeExperiment('117035755-0');
 	      var query = this.props.location.query;
 
 	      if (query.code) {
@@ -1202,6 +1683,10 @@ webpackJsonp([0],{
 	        this.onRedirect(query.code);
 	      } else {
 	        this.setState({ redirect: false });
+	      }
+
+	      if (query.exp) {
+	        this.setState({ experiment: query.exp });
 	      }
 	    }
 	  }, {
@@ -1213,13 +1698,19 @@ webpackJsonp([0],{
 	        _AuthStore2.default.getState().error
 	      ) : null;
 
+	      var experiments = {
+	        a: 'Will you run 1 mile per day?',
+	        b: 'We are running 1 mile per day.'
+	      };
+	      var message = experiments[this.state.experiment] || 'Will you run 1 mile every day?';
+
 	      return this.state.redirect ? _react2.default.createElement('div', null) : _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          'Will you run 1 mile every day?'
+	          message
 	        ),
 	        _react2.default.createElement(
 	          'h2',
@@ -1229,7 +1720,7 @@ webpackJsonp([0],{
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          'Accept his challenge and track your progress!'
+	          'Accept the challenge and track your progress!'
 	        ),
 	        _react2.default.createElement(
 	          'button',
@@ -1259,7 +1750,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 236:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1272,23 +1763,23 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _alt = __webpack_require__(237);
+	var _alt = __webpack_require__(239);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
-	var _AuthActions = __webpack_require__(238);
+	var _AuthActions = __webpack_require__(240);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _InterceptorUtil = __webpack_require__(239);
+	var _InterceptorUtil = __webpack_require__(241);
 
 	var _InterceptorUtil2 = _interopRequireDefault(_InterceptorUtil);
 
-	var _config = __webpack_require__(240);
+	var _config = __webpack_require__(242);
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _history = __webpack_require__(231);
+	var _history = __webpack_require__(233);
 
 	var _history2 = _interopRequireDefault(_history);
 
@@ -1296,7 +1787,11 @@ webpackJsonp([0],{
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _jsuri = __webpack_require__(241);
+	var _reactGa = __webpack_require__(231);
+
+	var _reactGa2 = _interopRequireDefault(_reactGa);
+
+	var _jsuri = __webpack_require__(243);
 
 	var _jsuri2 = _interopRequireDefault(_jsuri);
 
@@ -1354,6 +1849,7 @@ webpackJsonp([0],{
 	      try {
 	        _history2.default.replaceState(null, '/');
 	      } catch (e) {}
+	      _reactGa2.default.set('userId', "runkeeper:" + user.userID);
 	    }
 	  }, {
 	    key: 'refreshFitness',
@@ -1504,7 +2000,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 237:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1527,7 +2023,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 238:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1538,7 +2034,7 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _alt = __webpack_require__(237);
+	var _alt = __webpack_require__(239);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
@@ -1558,7 +2054,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 239:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1604,7 +2100,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 240:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -1628,7 +2124,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 241:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2095,7 +2591,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 242:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2218,7 +2714,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 243:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -2235,19 +2731,19 @@ webpackJsonp([0],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _connectToStores = __webpack_require__(242);
+	var _connectToStores = __webpack_require__(244);
 
 	var _connectToStores2 = _interopRequireDefault(_connectToStores);
 
-	var _AuthStore = __webpack_require__(236);
+	var _AuthStore = __webpack_require__(238);
 
 	var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
-	var _AuthActions = __webpack_require__(238);
+	var _AuthActions = __webpack_require__(240);
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _reactChartjs = __webpack_require__(244);
+	var _reactChartjs = __webpack_require__(246);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2381,7 +2877,7 @@ webpackJsonp([0],{
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'logout' },
+	          { className: 'xlogout' },
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: this.onClickLogout.bind(this) },
@@ -2434,33 +2930,33 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 244:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  Bar: __webpack_require__(245),
-	  Doughnut: __webpack_require__(249),
-	  Line: __webpack_require__(250),
-	  Pie: __webpack_require__(251),
-	  PolarArea: __webpack_require__(252),
-	  Radar: __webpack_require__(253),
-	  createClass: __webpack_require__(246).createClass
+	  Bar: __webpack_require__(247),
+	  Doughnut: __webpack_require__(251),
+	  Line: __webpack_require__(252),
+	  Pie: __webpack_require__(253),
+	  PolarArea: __webpack_require__(254),
+	  Radar: __webpack_require__(255),
+	  createClass: __webpack_require__(248).createClass
 	};
 
 
 /***/ },
 
-/***/ 245:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(246);
+	var vars = __webpack_require__(248);
 
 	module.exports = vars.createClass('Bar', ['getBarsAtEvent']);
 
 
 /***/ },
 
-/***/ 246:
+/***/ 248:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -2519,7 +3015,7 @@ webpackJsonp([0],{
 	    };
 
 	    classData.initializeChart = function(nextProps) {
-	      var Chart = __webpack_require__(247);
+	      var Chart = __webpack_require__(249);
 	      var el = ReactDOM.findDOMNode(this);
 	      var ctx = el.getContext("2d");
 	      var chart = new Chart(ctx)[chartType](nextProps.data, nextProps.options || {});
@@ -2596,7 +3092,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 247:
+/***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2903,7 +3399,7 @@ webpackJsonp([0],{
 				//Method for warning of errors
 				if (window.console && typeof window.console.warn == "function") console.warn(str);
 			},
-			amd = helpers.amd = ("function" == 'function' && __webpack_require__(248)),
+			amd = helpers.amd = ("function" == 'function' && __webpack_require__(250)),
 			//-- Math methods
 			isNumber = helpers.isNumber = function(n){
 				return !isNaN(parseFloat(n)) && isFinite(n);
@@ -6079,7 +6575,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 248:
+/***/ 250:
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -6088,32 +6584,12 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 249:
-/***/ function(module, exports, __webpack_require__) {
-
-	var vars = __webpack_require__(246);
-
-	module.exports = vars.createClass('Doughnut', ['getSegmentsAtEvent']);
-
-
-/***/ },
-
-/***/ 250:
-/***/ function(module, exports, __webpack_require__) {
-
-	var vars = __webpack_require__(246);
-
-	module.exports = vars.createClass('Line', ['getPointsAtEvent']);
-
-
-/***/ },
-
 /***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(246);
+	var vars = __webpack_require__(248);
 
-	module.exports = vars.createClass('Pie', ['getSegmentsAtEvent']);
+	module.exports = vars.createClass('Doughnut', ['getSegmentsAtEvent']);
 
 
 /***/ },
@@ -6121,9 +6597,9 @@ webpackJsonp([0],{
 /***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(246);
+	var vars = __webpack_require__(248);
 
-	module.exports = vars.createClass('PolarArea', ['getSegmentsAtEvent']);
+	module.exports = vars.createClass('Line', ['getPointsAtEvent']);
 
 
 /***/ },
@@ -6131,7 +6607,27 @@ webpackJsonp([0],{
 /***/ 253:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(246);
+	var vars = __webpack_require__(248);
+
+	module.exports = vars.createClass('Pie', ['getSegmentsAtEvent']);
+
+
+/***/ },
+
+/***/ 254:
+/***/ function(module, exports, __webpack_require__) {
+
+	var vars = __webpack_require__(248);
+
+	module.exports = vars.createClass('PolarArea', ['getSegmentsAtEvent']);
+
+
+/***/ },
+
+/***/ 255:
+/***/ function(module, exports, __webpack_require__) {
+
+	var vars = __webpack_require__(248);
 
 	module.exports = vars.createClass('Radar', ['getPointsAtEvent']);
 
