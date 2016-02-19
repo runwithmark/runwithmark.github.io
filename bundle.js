@@ -50,7 +50,8 @@ webpackJsonp([0],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Initialize GA
-	_reactGa2.default.initialize('UA-74056537-1', { debug: true });
+	_reactGa2.default.initializeExperiment('117035755-0');
+	_reactGa2.default.initialize('UA-74056537-1');
 
 	// Try to connect user from local storage value
 	_AuthActions2.default.localLogin();
@@ -1675,7 +1676,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      _reactGa2.default.initializeExperiment('117035755-0');
 	      var query = this.props.location.query;
 
 	      if (query.code) {
