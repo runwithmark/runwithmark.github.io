@@ -49,6 +49,8 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(256);
+
 	// Initialize GA
 	_reactGa2.default.initialize('UA-74056537-1');
 
@@ -1631,6 +1633,10 @@ webpackJsonp([0],{
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
+	var _config = __webpack_require__(242);
+
+	var _config2 = _interopRequireDefault(_config);
+
 	var _connectToStores = __webpack_require__(244);
 
 	var _connectToStores2 = _interopRequireDefault(_connectToStores);
@@ -1662,7 +1668,7 @@ webpackJsonp([0],{
 	    key: 'onClickLogin',
 	    value: function onClickLogin() {
 	      _reactGa2.default.outboundLink({ label: 'Join with Runkeeper' }, function () {
-	        window.location = 'https://runkeeper.com/apps/authorize?client_id=bce71a6415ec442eabf5c7a77d465fb3&response_type=code&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin';
+	        window.location = 'https://runkeeper.com/apps/authorize?client_id=' + _config2.default.clientId + '&response_type=code&redirect_uri=' + _config2.default.redirectUri;
 	      });
 	    }
 	  }, {
@@ -1698,33 +1704,70 @@ webpackJsonp([0],{
 	      ) : null;
 
 	      var experiments = {
-	        a: 'Will you run 1 mile per day?',
-	        b: 'We are running 1 mile per day.'
+	        a: _react2.default.createElement(
+	          'span',
+	          null,
+	          'Will you run',
+	          _react2.default.createElement('br', null),
+	          '1 mile every day?'
+	        ),
+	        b: _react2.default.createElement(
+	          'span',
+	          null,
+	          'We are running',
+	          _react2.default.createElement('br', null),
+	          '1 mile per day.'
+	        )
 	      };
-	      var message = experiments[this.state.experiment] || 'Will you run 1 mile every day?';
+	      var message = experiments[this.state.experiment] || _react2.default.createElement(
+	        'span',
+	        null,
+	        'Will you run',
+	        _react2.default.createElement('br', null),
+	        '1 mile per day?'
+	      );
 
 	      return this.state.redirect ? _react2.default.createElement('div', null) : _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'login' },
 	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          message
+	          'div',
+	          { className: 'trapezoid' },
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            message
+	          )
 	        ),
 	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Mark Zuckerberg committed to running 365 miles in 2016.'
-	        ),
-	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          'Accept the challenge and track your progress!'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.onClickLogin.bind(this) },
-	          'Join with Runkeeper'
+	          'div',
+	          { className: 'login-body' },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'Mark Zuckerberg committed to running 365 miles in 2016.'
+	          ),
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Accept the challenge and track your progress!'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'btn', onClick: this.onClickLogin.bind(this) },
+	            'Join with Runkeeper'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Don\'t use RunKeeper? Peek at ',
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'https://github.com/runwithmark/runwithmark.github.io', target: '_blank', onClick: _reactGa2.default.outboundLink({ label: 'Preview on GitHub' }, function () {}) },
+	              'what we\'re up to'
+	            ),
+	            '.'
+	          )
 	        )
 	      );
 	    }
@@ -1822,7 +1865,7 @@ webpackJsonp([0],{
 	    value: function onLogin(credentials) {
 	      var _this = this;
 
-	      _axios2.default.post('https://runkeeper.com/apps/token', 'grant_type=authorization_code' + '&code=' + credentials.code + '&client_id=' + _config2.default.clientId + '&client_secret=' + _config2.default.clientSecret + '&redirect_uri=http%3A%2F%2Frunwithmark.github.io%2Flogin', {
+	      _axios2.default.post('https://runkeeper.com/apps/token', 'grant_type=authorization_code' + '&code=' + credentials.code + '&client_id=' + _config2.default.clientId + '&client_secret=' + _config2.default.clientSecret + '&redirect_uri=' + _config2.default.redirectUri, {
 	        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 	      }).then(function (response) {
 	        _this.saveTokens(response.data);
@@ -2113,7 +2156,9 @@ webpackJsonp([0],{
 	  return {
 	    apiUrl: 'https://api.runkeeper.com/',
 	    clientId: 'bce71a6415ec442eabf5c7a77d465fb3',
-	    clientSecret: 'f46e037cb7c44f91880b07794ca3d65a'
+	    clientSecret: 'f46e037cb7c44f91880b07794ca3d65a',
+	    redirectUri: 'http%3A%2F%2Frunwithmark.github.io%2Flogin'
+	    // redirectUri: 'http%3A%2F%2F192.168.1.111:8080%2Flogin'
 	  };
 	};
 
@@ -2838,14 +2883,23 @@ webpackJsonp([0],{
 	      var progressRound5 = progress <= 100 ? Math.round(progress / 5) * 5 : 101;
 
 	      var graphData = [];
-	      for (var i = 1; i <= dayNum; i++) {
+	      for (var i = 0; i <= dayNum; i++) {
 	        graphData.push(this.progressDay(now, i, runs));
 	      }
 
 	      var options = {
+	        // responsive: true,
+	        pointDotRadius: 0,
+	        scaleShowHorizontalLines: false,
+	        scaleShowVerticalLines: false,
+	        // showScale: false,
+	        datasetStrokeWidth: 6,
+
 	        // tooltips
 	        pointHitDetectionRadius: 1,
-	        tooltipTemplate: "<%= value %>%",
+	        tooltipTemplate: "",
+	        tooltipEvents: [],
+	        // tooltipTemplate: "<%= value %>%",
 
 	        // y axis
 	        scaleOverride: true,
@@ -2859,21 +2913,23 @@ webpackJsonp([0],{
 	          return x[0].getDay() % 7 == 0 ? 1 + x[0].getMonth() + '/' + x[0].getDate() : '';
 	        }),
 	        datasets: [{
-	          fillColor: "rgba(151,187,205,0.2)",
-	          strokeColor: "rgba(151,187,205,1)",
-	          pointColor: "rgba(151,187,205,1)",
+	          fillColor: "#fff",
+	          strokeColor: "#31a4d9",
+	          pointColor: "#31a4d9",
 	          pointStrokeColor: "#fff",
 	          pointHighlightFill: "#fff",
-	          pointHighlightStroke: "rgba(151,187,205,1)",
+	          pointHighlightStroke: "#31a4d9",
 	          data: graphData.map(function (x) {
 	            return x[1];
 	          })
 	        }]
 	      };
 
+	      // progressRound5 = 10;
+
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'board' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'logout' },
@@ -2885,37 +2941,42 @@ webpackJsonp([0],{
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'box1' },
+	          { className: 'trapezoid' },
 	          _react2.default.createElement(
-	            'p',
-	            { className: 'fw fw1' },
+	            'h1',
+	            { className: 'fw1' },
 	            'Day ',
 	            dayNum
-	          ),
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: "progress-radial progress-" + progressRound5 },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'wrap' },
+	            { className: 'overlay' },
 	            _react2.default.createElement(
-	              'div',
-	              { className: "progress-radial progress-" + progressRound5 },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'overlay' },
-	                _react2.default.createElement(
-	                  'p',
-	                  { className: 'fw fw2' },
-	                  runMiles
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  { className: 'fw fw3' },
-	                  'miles / 365'
-	                )
-	              )
+	              'p',
+	              { className: 'fw fw2' },
+	              runMiles
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { className: 'fw fw3' },
+	              'miles / ',
+	              dayNum
 	            )
 	          )
 	        ),
-	        _react2.default.createElement(_reactChartjs.Line, { data: data, options: options })
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'box' },
+	          _react2.default.createElement(
+	            'div',
+	            { id: 'inner_box' },
+	            _react2.default.createElement(_reactChartjs.Line, { data: data, options: options })
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -6630,6 +6691,13 @@ webpackJsonp([0],{
 
 	module.exports = vars.createClass('Radar', ['getPointsAtEvent']);
 
+
+/***/ },
+
+/***/ 256:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 
