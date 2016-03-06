@@ -1,15 +1,37 @@
 html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit}b,strong{font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:0.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{box-sizing:content-box;height:0;overflow:visible}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace, monospace;font-size:1em}button,input,optgroup,select,textarea{font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}button:-moz-focusring,input:-moz-focusring{outline:1px dotted ButtonText}input{line-height:normal}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:0.35em 0.625em 0.75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:bold}
 
+* {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+@media (min-width: 668px) {
+  body {
+    max-width: 375px;
+    margin: 0 auto;
+  }
+}
+
+a {
+  color: #2ec9d7;
+  text-decoration: none;
+}
+a:hover {
+
+}
+
 .trapezoid {
   width: 100%;
-  height: 200px;
+  height: 210px;
   
   position: relative;
   background: #3a5795;
   overflow: hidden;
 
+  /*
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+  */
 }
 .trapezoid:before {
   content: ' ';
@@ -26,61 +48,105 @@ html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:1
 }
 
 .login-body {
-  padding: 30px;
+  margin: -15px 25px 0 25px;
+  padding: 30px 0;
 }
 
 .trapezoid h1 {
-  padding: 20px;
+  margin: 0;
+  padding: 35px 0;
   color: white;
   z-index: 10;
   position: relative;
   text-align: center;
+  
+  font-size: 32px;
+  line-height: 42px;
 }
 
-.login h1 {
-  font-size: 32px;  
-}
-
-.login h3 {
-  font-size: 18px;
-  font-weight: normal;
+.login-card h3 {
+  font-size: 20px;
+  line-height: 30px;
   text-align: center;
-  margin-bottom: 40px;
+  margin: 0;
+  margin-top: 15px;
 }
 
 .login h2 {
-  font-size: 24px;
-  font-weight: normal;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 40px;
+  color: #3a5795;
+  
+  margin: 30px 0;
 }
 
 .login button {
   display: block;
-  margin: 15px auto;
+  margin: 0 auto;
 }
 
 .login p {
   font-size: 12px;
+  color: #3a5795;
   text-align: center;
   margin: 0;
+  margin-top: 15px;
+}
+
+.img-circle { 
+  border-radius: 50%;
+}
+
+.img-login { 
+  width: 90px;
+  margin-top: -90px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-card {
+  text-align: center;
+  background-color: white;
+  margin: -15px 25px 0 25px;
+  padding: 30px 0;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.img-btn { 
+  width: 28px;
+  height: 28px;
+  margin-right: 20px;
+  vertical-align: middle;
 }
 
 .btn {
-  font-size: 18px;
   border: 0;
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
   color: #ffffff;
-  background: #31a4d9;
-  padding: 15px 60px 15px 60px;
+  background: #2ec9d7;
+  padding: 15px 0 15px 0;
+  text-align: center;
+  width: 100%;
   text-decoration: none;
 }
 
 .btn:hover {
-  background: #3cb0fd;
+  background: #186a72;
   text-decoration: none;
+}
+
+.btn > span {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 28px;
+  vertical-align: middle;
 }
 
 #box {

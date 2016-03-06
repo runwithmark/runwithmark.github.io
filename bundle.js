@@ -49,10 +49,12 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(256);
+	__webpack_require__(257);
 
 	// Initialize GA
-	_reactGa2.default.initialize('UA-74056537-1');
+	if (window && window.location.hostname !== 'localhost') {
+	  _reactGa2.default.initialize('UA-74056537-1');
+	}
 
 	// Try to connect user from local storage value
 	_AuthActions2.default.localLogin();
@@ -77,18 +79,6 @@ webpackJsonp([0],{
 	}
 
 	_reactDom2.default.render(_react2.default.createElement(_reactRouter2.default, { history: _history2.default, routes: _routes2.default, onUpdate: routerPageview }), document.getElementById('wrapper'));
-
-	// function startApp(){
-	//         Router.run(Routes, Router.HistoryLocation, function (Handler, state) {
-	//                 ga.pageview(state.pathname);
-	//                 var lang = typeof state.params.lang !== 'undefined' ? state.params.lang : 'en';
-	//                 React.render(<Handler lang={lang}/>, document.getElementById('universe'));
-	//         });
-	// }
-	// startApp();
-
-	// ga.set('userId', {{USER_ID}}); // Set the user ID using signed-in user_id.
-	// ga.outboundLink(args, hitCallback)
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "app.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -1515,7 +1505,7 @@ webpackJsonp([0],{
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Dashboard = __webpack_require__(245);
+	var _Dashboard = __webpack_require__(246);
 
 	var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
@@ -1714,7 +1704,7 @@ webpackJsonp([0],{
 	        b: _react2.default.createElement(
 	          'span',
 	          null,
-	          'We are running',
+	          'We\'re running',
 	          _react2.default.createElement('br', null),
 	          '1 mile per day.'
 	        )
@@ -1741,32 +1731,43 @@ webpackJsonp([0],{
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'login-body' },
+	          { className: 'login-card' },
+	          _react2.default.createElement('img', { className: 'img-login img-circle', src: 'https://graph.facebook.com/v2.5/4/picture?type=square&width=200' }),
 	          _react2.default.createElement(
 	            'h3',
 	            null,
-	            'Mark Zuckerberg committed to running 365 miles in 2016.'
-	          ),
+	            'Mark Zuckerberg',
+	            _react2.default.createElement('br', null),
+	            'committed to running',
+	            _react2.default.createElement('br', null),
+	            '365 miles in 2016.'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'login-body' },
 	          _react2.default.createElement(
 	            'h2',
 	            null,
-	            'Accept the challenge and track your progress!'
+	            'Accept the challenge',
+	            _react2.default.createElement('br', null),
+	            'and track your progress!'
 	          ),
 	          _react2.default.createElement(
 	            'button',
 	            { className: 'btn', onClick: this.onClickLogin.bind(this) },
+	            _react2.default.createElement('img', { className: 'img-btn', src: __webpack_require__(245) }),
 	            'Join with Runkeeper'
 	          ),
 	          _react2.default.createElement(
 	            'p',
 	            null,
-	            'Don\'t use RunKeeper? Peek at ',
+	            'Don\'t use RunKeeper? ',
 	            _react2.default.createElement(
 	              'a',
 	              { href: 'https://github.com/runwithmark/runwithmark.github.io', target: '_blank', onClick: _reactGa2.default.outboundLink({ label: 'Preview on GitHub' }, function () {}) },
-	              'what we\'re up to'
-	            ),
-	            '.'
+	              'Peek at what we\'re up to'
+	            )
 	          )
 	        )
 	      );
@@ -1898,7 +1899,9 @@ webpackJsonp([0],{
 	    value: function refreshFitness() {
 	      var _this2 = this;
 
-	      _axios2.default.get(_config2.default.apiUrl + this.user.fitness_activities + '?pageSize=1000').then(function (response) {
+	      _axios2.default.get(_config2.default.apiUrl + this.user.fitness_activities + '?pageSize=1000', {
+	        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+	      }).then(function (response) {
 	        _this2.saveFitness(response.data);
 	      }).catch(function (response) {
 	        console.log(response);
@@ -2157,8 +2160,8 @@ webpackJsonp([0],{
 	    apiUrl: 'https://api.runkeeper.com/',
 	    clientId: 'bce71a6415ec442eabf5c7a77d465fb3',
 	    clientSecret: 'f46e037cb7c44f91880b07794ca3d65a',
-	    redirectUri: 'http%3A%2F%2Frunwithmark.github.io%2Flogin'
-	    // redirectUri: 'http%3A%2F%2F192.168.1.111:8080%2Flogin'
+	    // redirectUri: 'http%3A%2F%2Frunwithmark.github.io%2Flogin'
+	    redirectUri: 'http%3A%2F%2F192.168.1.111:8080%2Flogin'
 	  };
 	};
 
@@ -2761,6 +2764,13 @@ webpackJsonp([0],{
 /***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__.p + "237d7004e63f0b8b5eb4d8515fd0807a.png";
+
+/***/ },
+
+/***/ 246:
+/***/ function(module, exports, __webpack_require__) {
+
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/emanuele/d/run/react-oauth2-example/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	'use strict';
@@ -2787,7 +2797,7 @@ webpackJsonp([0],{
 
 	var _AuthActions2 = _interopRequireDefault(_AuthActions);
 
-	var _reactChartjs = __webpack_require__(246);
+	var _reactChartjs = __webpack_require__(247);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2990,33 +3000,33 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 246:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  Bar: __webpack_require__(247),
-	  Doughnut: __webpack_require__(251),
-	  Line: __webpack_require__(252),
-	  Pie: __webpack_require__(253),
-	  PolarArea: __webpack_require__(254),
-	  Radar: __webpack_require__(255),
-	  createClass: __webpack_require__(248).createClass
+	  Bar: __webpack_require__(248),
+	  Doughnut: __webpack_require__(252),
+	  Line: __webpack_require__(253),
+	  Pie: __webpack_require__(254),
+	  PolarArea: __webpack_require__(255),
+	  Radar: __webpack_require__(256),
+	  createClass: __webpack_require__(249).createClass
 	};
 
 
 /***/ },
 
-/***/ 247:
+/***/ 248:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(248);
+	var vars = __webpack_require__(249);
 
 	module.exports = vars.createClass('Bar', ['getBarsAtEvent']);
 
 
 /***/ },
 
-/***/ 248:
+/***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -3075,7 +3085,7 @@ webpackJsonp([0],{
 	    };
 
 	    classData.initializeChart = function(nextProps) {
-	      var Chart = __webpack_require__(249);
+	      var Chart = __webpack_require__(250);
 	      var el = ReactDOM.findDOMNode(this);
 	      var ctx = el.getContext("2d");
 	      var chart = new Chart(ctx)[chartType](nextProps.data, nextProps.options || {});
@@ -3152,7 +3162,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 249:
+/***/ 250:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -3459,7 +3469,7 @@ webpackJsonp([0],{
 				//Method for warning of errors
 				if (window.console && typeof window.console.warn == "function") console.warn(str);
 			},
-			amd = helpers.amd = ("function" == 'function' && __webpack_require__(250)),
+			amd = helpers.amd = ("function" == 'function' && __webpack_require__(251)),
 			//-- Math methods
 			isNumber = helpers.isNumber = function(n){
 				return !isNaN(parseFloat(n)) && isFinite(n);
@@ -6635,7 +6645,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 250:
+/***/ 251:
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -6644,22 +6654,12 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 251:
-/***/ function(module, exports, __webpack_require__) {
-
-	var vars = __webpack_require__(248);
-
-	module.exports = vars.createClass('Doughnut', ['getSegmentsAtEvent']);
-
-
-/***/ },
-
 /***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(248);
+	var vars = __webpack_require__(249);
 
-	module.exports = vars.createClass('Line', ['getPointsAtEvent']);
+	module.exports = vars.createClass('Doughnut', ['getSegmentsAtEvent']);
 
 
 /***/ },
@@ -6667,9 +6667,9 @@ webpackJsonp([0],{
 /***/ 253:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(248);
+	var vars = __webpack_require__(249);
 
-	module.exports = vars.createClass('Pie', ['getSegmentsAtEvent']);
+	module.exports = vars.createClass('Line', ['getPointsAtEvent']);
 
 
 /***/ },
@@ -6677,9 +6677,9 @@ webpackJsonp([0],{
 /***/ 254:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(248);
+	var vars = __webpack_require__(249);
 
-	module.exports = vars.createClass('PolarArea', ['getSegmentsAtEvent']);
+	module.exports = vars.createClass('Pie', ['getSegmentsAtEvent']);
 
 
 /***/ },
@@ -6687,14 +6687,24 @@ webpackJsonp([0],{
 /***/ 255:
 /***/ function(module, exports, __webpack_require__) {
 
-	var vars = __webpack_require__(248);
+	var vars = __webpack_require__(249);
+
+	module.exports = vars.createClass('PolarArea', ['getSegmentsAtEvent']);
+
+
+/***/ },
+
+/***/ 256:
+/***/ function(module, exports, __webpack_require__) {
+
+	var vars = __webpack_require__(249);
 
 	module.exports = vars.createClass('Radar', ['getPointsAtEvent']);
 
 
 /***/ },
 
-/***/ 256:
+/***/ 257:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
