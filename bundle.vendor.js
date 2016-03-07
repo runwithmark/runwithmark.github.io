@@ -101,9 +101,9 @@
 	__webpack_require__(1);
 	__webpack_require__(170);
 	__webpack_require__(171);
-	__webpack_require__(261);
+	__webpack_require__(262);
 	__webpack_require__(158);
-	module.exports = __webpack_require__(264);
+	module.exports = __webpack_require__(265);
 
 
 /***/ },
@@ -25854,11 +25854,12 @@
 /* 258 */,
 /* 259 */,
 /* 260 */,
-/* 261 */
+/* 261 */,
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mixin = __webpack_require__(262);
-	var assign = __webpack_require__(263);
+	var mixin = __webpack_require__(263);
+	var assign = __webpack_require__(264);
 
 	var mixinProto = mixin({
 	  // lifecycle stuff is as you'd expect
@@ -26011,7 +26012,7 @@
 
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports) {
 
 	var objToStr = function(x){ return Object.prototype.toString.call(x); };
@@ -26194,7 +26195,7 @@
 
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports) {
 
 	/* eslint-disable no-unused-vars */
@@ -26239,7 +26240,7 @@
 
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26280,7 +26281,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(265);
+	var _useBeforeUnload2 = __webpack_require__(266);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -26300,13 +26301,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(266);
+	var _enableBeforeUnload2 = __webpack_require__(267);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(267);
+	var _enableQueries2 = __webpack_require__(268);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -26315,7 +26316,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -26432,7 +26433,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26445,7 +26446,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(265);
+	var _useBeforeUnload = __webpack_require__(266);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -26453,7 +26454,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

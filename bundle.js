@@ -2160,8 +2160,8 @@ webpackJsonp([0],{
 	    apiUrl: 'https://api.runkeeper.com/',
 	    clientId: 'bce71a6415ec442eabf5c7a77d465fb3',
 	    clientSecret: 'f46e037cb7c44f91880b07794ca3d65a',
-	    // redirectUri: 'http%3A%2F%2Frunwithmark.github.io%2Flogin'
-	    redirectUri: 'http%3A%2F%2F192.168.1.111:8080%2Flogin'
+	    redirectUri: 'http%3A%2F%2Frunwithmark.github.io%2Flogin'
+	    // redirectUri: 'http%3A%2F%2F192.168.1.111:8080%2Flogin'
 	  };
 	};
 
@@ -2807,6 +2807,23 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	Date.prototype.getMonthName = function (lang) {
+	  lang = lang && lang in Date.locale ? lang : 'en';
+	  return Date.locale[lang].month_names[this.getMonth()];
+	};
+
+	Date.prototype.getMonthNameShort = function (lang) {
+	  lang = lang && lang in Date.locale ? lang : 'en';
+	  return Date.locale[lang].month_names_short[this.getMonth()];
+	};
+
+	Date.locale = {
+	  en: {
+	    month_names: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	    month_names_short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+	  }
+	};
+
 	var Dashboard = function (_Component) {
 	  _inherits(Dashboard, _Component);
 
@@ -2890,12 +2907,13 @@ webpackJsonp([0],{
 	      var dayNumWindow = Math.max(dayNum - 14, 0);
 
 	      var progress = Math.round(Math.max(runMiles - dayNumWindow, 0) / Math.max(dayNum - dayNumWindow, 1) * 100);
-	      var progressRound5 = progress <= 100 ? Math.round(progress / 5) * 5 : 101;
 
 	      var graphData = [];
 	      for (var i = 0; i <= dayNum; i++) {
 	        graphData.push(this.progressDay(now, i, runs));
 	      }
+
+	      var dayDate = now.getDate() + " " + now.getMonthName() + " " + now.getFullYear();
 
 	      var options = {
 	        // responsive: true,
@@ -2903,7 +2921,7 @@ webpackJsonp([0],{
 	        scaleShowHorizontalLines: false,
 	        scaleShowVerticalLines: false,
 	        // showScale: false,
-	        datasetStrokeWidth: 6,
+	        datasetStrokeWidth: 2,
 
 	        // tooltips
 	        pointHitDetectionRadius: 1,
@@ -2915,31 +2933,52 @@ webpackJsonp([0],{
 	        scaleOverride: true,
 	        scaleSteps: 3,
 	        scaleStepWidth: 50,
-	        scaleStartValue: 0
+	        scaleStartValue: 0,
+	        scaleLineColor: "#ddd",
+	        scaleLineWidth: 1,
+	        scaleFontColor: "#ddd"
 	      };
 
 	      var data = {
 	        labels: graphData.map(function (x) {
-	          return x[0].getDay() % 7 == 0 ? 1 + x[0].getMonth() + '/' + x[0].getDate() : '';
+	          return x[0].getDay() % 7 == 0 ? 1 + x[0].getDate() + ' ' + x[0].getMonthNameShort().toUpperCase() + '                    ' : '';
 	        }),
 	        datasets: [{
-	          fillColor: "#fff",
-	          strokeColor: "#31a4d9",
-	          pointColor: "#31a4d9",
+	          fillColor: "transparent",
+	          strokeColor: "#2ec9d7",
+	          pointColor: "#2ec9d7",
 	          pointStrokeColor: "#fff",
 	          pointHighlightFill: "#fff",
-	          pointHighlightStroke: "#31a4d9",
+	          pointHighlightStroke: "#2ec9d7",
 	          data: graphData.map(function (x) {
 	            return x[1];
 	          })
 	        }]
 	      };
 
-	      // progressRound5 = 10;
+	      var progressRound30 = 100;
+	      if (progress < 90) {
+	        progressRound30 = 60;
+	      }
+	      if (progress < 50) {
+	        progressRound30 = 30;
+	      }
+	      if (progress < 15) {
+	        progressRound30 = 0;
+	      }
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'board' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'appbar' },
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'btn-circle', href: 'runkeeper://' },
+	            'Run'
+	          )
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'logout' },
@@ -2950,31 +2989,39 @@ webpackJsonp([0],{
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'trapezoid' },
+	          'h1',
+	          null,
+	          'Day ',
+	          dayNum,
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
-	            'h1',
-	            { className: 'fw1' },
-	            'Day ',
-	            dayNum
+	            'small',
+	            null,
+	            dayDate
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: "progress-radial progress-" + progressRound5 },
+	          { className: 'progress-outer' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'overlay' },
+	            { className: "progress progress-" + progressRound30 },
 	            _react2.default.createElement(
-	              'p',
-	              { className: 'fw fw2' },
+	              'h1',
+	              { className: 'miles' },
 	              runMiles
 	            ),
 	            _react2.default.createElement(
-	              'p',
-	              { className: 'fw fw3' },
-	              'miles / ',
-	              dayNum
+	              'small',
+	              { className: 'miles-txt' },
+	              'miles'
+	            ),
+	            _react2.default.createElement('br', null),
+	            _react2.default.createElement(
+	              'small',
+	              { className: "miles-num miles-num-" + progressRound30 },
+	              progress,
+	              '%'
 	            )
 	          )
 	        ),

@@ -5,21 +5,14 @@ html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:1
   font-weight: 400;
 }
 
-@media (min-width: 668px) {
-  body {
-    max-width: 375px;
-    margin: 0 auto;
-  }
-}
-
 a {
   color: #2ec9d7;
   text-decoration: none;
 }
-a:hover {
 
-}
-
+/*
+ * LOGIN
+ */
 .trapezoid {
   width: 100%;
   height: 210px;
@@ -42,14 +35,9 @@ a:hover {
   width: 100%;
   height: 100%;
   z-index: 1;
-  opacity: 0.4;
+  opacity: 0.2;
   background: url(https://scontent.fsnc1-1.fna.fbcdn.net/hphotos-xlf1/t31.0-8/12496408_10102579344275191_2437322757038786807_o.jpg) no-repeat center 0 fixed; 
   background-size: 100%;
-}
-
-.login-body {
-  margin: -15px 25px 0 25px;
-  padding: 30px 0;
 }
 
 .trapezoid h1 {
@@ -62,37 +50,6 @@ a:hover {
   
   font-size: 32px;
   line-height: 42px;
-}
-
-.login-card h3 {
-  font-size: 20px;
-  line-height: 30px;
-  text-align: center;
-  margin: 0;
-  margin-top: 15px;
-}
-
-.login h2 {
-  font-size: 22px;
-  line-height: 30px;
-  font-weight: 600;
-  text-align: center;
-  color: #3a5795;
-  
-  margin: 30px 0;
-}
-
-.login button {
-  display: block;
-  margin: 0 auto;
-}
-
-.login p {
-  font-size: 12px;
-  color: #3a5795;
-  text-align: center;
-  margin: 0;
-  margin-top: 15px;
 }
 
 .img-circle { 
@@ -115,6 +72,33 @@ a:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.login-card h3 {
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  margin: 0;
+  margin-top: 15px;
+}
+
+.login-body {
+  margin: -15px 25px 0 25px;
+  padding: 30px 0;
+}
+
+.login-body h2 {
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+  text-align: center;
+  color: #3a5795;
+  
+  margin: 30px 0;
+}
+
+.login-body button {
+  display: block;
+  margin: 0 auto;
+}
 
 .img-btn { 
   width: 28px;
@@ -149,14 +133,112 @@ a:hover {
   vertical-align: middle;
 }
 
+.login-body p {
+  font-size: 12px;
+  color: #3a5795;
+  text-align: center;
+  margin: 0;
+  margin-top: 15px;
+}
+
+
+/*
+ * DASHBOARD
+ */
+html, body, #wrapper, .main {
+  min-height: 100%;
+  margin: 0;
+}
+
+.board {
+  display: block;
+/*  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+*/
+  min-height: 750px;
+  background: #3a5795;
+  overflow: hidden;
+}
+
+.board:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 750px;
+  z-index: 1;
+  opacity: 0.2;
+  background: url(/b6b701bc63236f1be80b00a5cbb5242d.jpg) no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/*.board > * {
+  position: relative;
+  z-index: 10;
+}
+*/
+.appbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 1000;
+  background-color: white;
+}
+
+.btn-circle {
+  font-size: 16px;
+  text-transform: uppercase;
+  line-height: 100px;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.appbar .btn-circle {
+  display: block;
+  color: white;
+  background-color: #2ec9d7;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto;
+  margin-top: -40px;
+}
+
+.board h1 {
+  margin: 0;
+  padding: 35px 0;
+  color: white;
+  z-index: 10;
+  position: relative;
+  text-align: center;
+  
+  font-size: 32px;
+  line-height: 42px;
+}
+
+.board small {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #ddd;
+}
+
 #box {
     width: 100%;
-    height: 200px;
+    height: 300px;
     overflow-x: scroll;
     overflow-y: hidden;
     /*-webkit-overflow-scrolling: touch;*/
     overflow-scrolling: touch;
     direction:rtl;
+    position: relative;
+    z-index: 100;
 }
 #inner_box {
   overflow: hidden;
@@ -168,6 +250,11 @@ canvas {
   height: 100%;
 }
 
+.end {
+  margin-top: 100px;
+}
+
+
     .logout {
       display: none;
     }
@@ -178,143 +265,73 @@ canvas {
       z-index: 100;
     }
 
-    .box1 {
-      width: 220px;
-      margin: 0 auto;
-    }
-    .fw { 
-      text-align: center;
-      margin: 0;
-    }
-    .fw1 {
-      font-size: 45px;
-      margin-bottom: 30px;
-    }
-    .fw2 {
-      margin-top: 30px;
-      font-size: 70px;
-    }
-    .fw3 {
-      font-size: 25px;
-    }
-
-/* -------------------------------------
- * Bar container
- * ------------------------------------- */
-.progress-radial {
-  /*float: left;*/
-  margin: 0 auto;
-  position: relative;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  margin-bottom: 30px;
-}
-
-/* -------------------------------------
- * Optional centered circle w/text
- * ------------------------------------- */
-.progress-radial .overlay {
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  margin-left: 20px;
-  margin-top: 5px;
+.progress-outer {
   text-align: center;
-  line-height: 60px;
+}
+
+.progress {
+  border: 3px solid transparent;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+.progress.progress-30 {
+    border-color: #d7902d;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+}
+.progress.progress-60 {
+    border-color: #74d72d;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+}
+.progress.progress-100 {
+    border-color: #2ec9d7;
+    border-bottom-color: transparent;
+}
+
+h1.miles {
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 130px;
+  margin: 0;
+  padding: 0;
+}
+
+small.miles-num {
+  opacity: 0.6;
   font-size: 16px;
-  padding-top: 15px;
+}
+small.miles-num-0 {
+  color: #d73b2d;
+}
+small.miles-num-30 {
+  color: #d7902d;
+}
+small.miles-num-60 {
+  color: #74d72d;
+}
+small.miles-num-100 {
+  color: #2ec9d7;
 }
 
-/* -------------------------------------
- * Mixin for progress-% class
- * ------------------------------------- */
-.progress-0 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(95deg, #F4511E 50%, #fff 50%, #fff);
+.scale {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.progress-5 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(108deg, #F4511E 50%, #fff 50%, #fff);
-}
 
-.progress-10 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(126deg, #F4511E 50%, #fff 50%, #fff);
-}
+@media (min-width: 668px) {
+  body {
+    max-width: 375px;
+    margin: 0 auto;
+  }
 
-.progress-15 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(144deg, #F4511E 50%, #fff 50%, #fff);
-}
-
-.progress-20 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(162deg, #FB8C00 50%, #fff 50%, #fff);
-}
-
-.progress-25 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(180deg, #FB8C00 50%, #fff 50%, #fff);
-}
-
-.progress-30 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(198deg, #FB8C00 50%, #fff 50%, #fff);
-}
-
-.progress-35 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(216deg, #FFB300 50%, #fff 50%, #fff);
-}
-
-.progress-40 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(234deg, #FFB300 50%, #fff 50%, #fff);
-}
-
-.progress-45 {
-  background-image: linear-gradient(90deg, #fff 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(252deg, #FFB300 50%, #fff 50%, #fff);
-}
-
-.progress-50 {
-  background-image: linear-gradient(-90deg, #FDD835 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #FDD835 50%, #fff 50%, #fff);
-}
-
-.progress-55 {
-  background-image: linear-gradient(-72deg, #FDD835 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #FDD835 50%, #fff 50%, #fff);
-}
-
-.progress-60 {
-  background-image: linear-gradient(-54deg, #FDD835 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #FDD835 50%, #fff 50%, #fff);
-}
-
-.progress-65 {
-  background-image: linear-gradient(-36deg, #C0CA33 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #C0CA33 50%, #fff 50%, #fff);
-}
-
-.progress-70 {
-  background-image: linear-gradient(-18deg, #C0CA33 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #C0CA33 50%, #fff 50%, #fff);
-}
-
-.progress-75 {
-  background-image: linear-gradient(0deg, #C0CA33 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #C0CA33 50%, #fff 50%, #fff);
-}
-
-.progress-80 {
-  background-image: linear-gradient(18deg, #7CB342 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #7CB342 50%, #fff 50%, #fff);
-}
-
-.progress-85 {
-  background-image: linear-gradient(36deg, #7CB342 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #7CB342 50%, #fff 50%, #fff);
-}
-
-.progress-90 {
-  background-image: linear-gradient(54deg, #7CB342 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #7CB342 50%, #fff 50%, #fff);
-}
-
-.progress-95 {
-  background-image: linear-gradient(72deg, #43A047 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #43A047 50%, #fff 50%, #fff);
-}
-
-.progress-100 {
-  background-image: linear-gradient(90deg, #43A047 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #43A047 50%, #fff 50%, #fff);
-}
-
-.progress-101 {
-  background-image: linear-gradient(90deg, #00ACC1 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, #00ACC1 50%, #fff 50%, #fff);
+  .trapezoid:before {
+    background-size: 375px;
+  }
 }
