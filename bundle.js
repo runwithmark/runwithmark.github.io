@@ -2941,7 +2941,7 @@ webpackJsonp([0],{
 
 	      var data = {
 	        labels: graphData.map(function (x) {
-	          return x[0].getDay() % 7 == 0 ? 1 + x[0].getDate() + ' ' + x[0].getMonthNameShort().toUpperCase() + '                    ' : '';
+	          return x[0].getDay() % 7 == 0 ? x[0].getDate() + ' ' + x[0].getMonthNameShort().toUpperCase() + '                    ' : '';
 	        }),
 	        datasets: [{
 	          fillColor: "transparent",
