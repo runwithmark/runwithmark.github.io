@@ -2845,7 +2845,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'filterRunsAndDate',
 	    value: function filterRunsAndDate(activity) {
-	      return activity.type == "Running" && new Date(activity.start_time).getFullYear() == 2016;
+	      return activity.type == "Running" && new Date(activity.start_time).getFullYear() == 2017;
 	    }
 	  }, {
 	    key: 'filterByDate',
